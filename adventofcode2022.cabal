@@ -41,3 +41,11 @@ common aoc
         , megaparsec
         , containers
         , vector
+
+common calorie-counting
+    import: aoc
+    hs-source-dirs: 01_calorie-counting
+    other-modules: CalorieCounting
+executable calorie-counting
+    import: calorie-counting
+    main-is: Main.hs
