@@ -49,3 +49,9 @@ common calorie-counting
 executable calorie-counting
     import: calorie-counting
     main-is: Main.hs
+test-suite calorie-counting-test
+    import: calorie-counting
+    main-is: Spec.hs
+benchmark calorie-counting-bench
+    import: calorie-counting
+    main-is: Bench.hs
