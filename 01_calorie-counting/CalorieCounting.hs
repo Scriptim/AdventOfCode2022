@@ -1,6 +1,7 @@
 module CalorieCounting (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Data.List (sort)
 import Text.Megaparsec (endBy1, sepBy)
 import Text.Megaparsec.Char (newline)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -12,4 +13,4 @@ part1 :: [[Int]] -> String
 part1 = show . maximum . map sum
 
 part2 :: [[Int]] -> String
-part2 = undefined
+part2 = show . sum . take 3 . reverse . sort . map sum
