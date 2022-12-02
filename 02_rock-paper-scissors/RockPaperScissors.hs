@@ -16,14 +16,8 @@ data Outcome = Loss | Draw | Win deriving (Eq, Enum, Generic, NFData)
 data ShapeOrOutcome = ShapeOrOutcome Shape Outcome deriving (Generic, NFData)
 
 parseInput :: Parser [(Shape, ShapeOrOutcome)]
-parseInput = some parseRound
+parseInput = some $ (,) <$> shape <* space <*> shapeOrOutcome <* newline
   where
-    parseRound = do
-      opp <- shape
-      _ <- space
-      self <- shapeOrOutcome
-      _ <- newline
-      return (opp, self)
     shape = Rock <$ char 'A' <|> Paper <$ char 'B' <|> Scissors <$ char 'C'
     shapeOrOutcome = ShapeOrOutcome Rock Loss <$ char 'X' <|> ShapeOrOutcome Paper Draw <$ char 'Y' <|> ShapeOrOutcome Scissors Win <$ char 'Z'
 
