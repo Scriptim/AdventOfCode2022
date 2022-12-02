@@ -55,3 +55,11 @@ test-suite calorie-counting-test
 benchmark calorie-counting-bench
     import: calorie-counting
     main-is: Bench.hs
+
+common rock-paper-scissors
+    import: aoc
+    hs-source-dirs: 02_rock-paper-scissors
+    other-modules: RockPaperScissors
+executable rock-paper-scissors
+    import: rock-paper-scissors
+    main-is: Main.hs
