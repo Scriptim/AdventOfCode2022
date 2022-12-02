@@ -41,6 +41,7 @@ common aoc
         , megaparsec
         , containers
         , vector
+        , deepseq
 
 common calorie-counting
     import: aoc
@@ -63,3 +64,9 @@ common rock-paper-scissors
 executable rock-paper-scissors
     import: rock-paper-scissors
     main-is: Main.hs
+test-suite rock-paper-scissors-test
+    import: rock-paper-scissors
+    main-is: Spec.hs
+benchmark rock-paper-scissors-bench
+    import: rock-paper-scissors
+    main-is: Bench.hs

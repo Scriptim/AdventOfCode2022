@@ -1,14 +1,19 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module RockPaperScissors (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
+import GHC.Generics (Generic)
 import Text.Megaparsec (some, (<|>))
 import Text.Megaparsec.Char (char, newline, space)
 
-data Shape = Rock | Paper | Scissors deriving (Enum)
+data Shape = Rock | Paper | Scissors deriving (Enum, Generic, NFData)
 
-data Outcome = Loss | Draw | Win deriving (Eq, Enum)
+data Outcome = Loss | Draw | Win deriving (Eq, Enum, Generic, NFData)
 
-data ShapeOrOutcome = ShapeOrOutcome Shape Outcome
+data ShapeOrOutcome = ShapeOrOutcome Shape Outcome deriving (Generic, NFData)
 
 parseInput :: Parser [(Shape, ShapeOrOutcome)]
 parseInput = some parseRound
@@ -35,7 +40,7 @@ shapeScore :: Shape -> Int
 shapeScore = succ . fromEnum
 
 outcomeScore :: Outcome -> Int
-outcomeScore = (*3) . fromEnum
+outcomeScore = (* 3) . fromEnum
 
 action :: Shape -> Outcome -> Shape
 action opp outc = head $ filter ((==) outc . outcome opp) [Rock, Paper, Scissors]
