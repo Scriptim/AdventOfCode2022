@@ -4,9 +4,9 @@ import AdventOfCode (Parser)
 import Text.Megaparsec (some, (<|>))
 import Text.Megaparsec.Char (char, newline, space)
 
-data Shape = Rock | Paper | Scissors
+data Shape = Rock | Paper | Scissors deriving (Enum)
 
-data Outcome = Loss | Draw | Win deriving (Eq)
+data Outcome = Loss | Draw | Win deriving (Eq, Enum)
 
 data ShapeOrOutcome = ShapeOrOutcome Shape Outcome
 
@@ -23,10 +23,7 @@ parseInput = some parseRound
     shapeOrOutcome = ShapeOrOutcome Rock Loss <$ char 'X' <|> ShapeOrOutcome Paper Draw <$ char 'Y' <|> ShapeOrOutcome Scissors Win <$ char 'Z'
 
 beats :: Shape -> Shape -> Bool
-beats Rock Scissors = True
-beats Paper Rock = True
-beats Scissors Paper = True
-beats _ _ = False
+beats a b = fromEnum a == mod (fromEnum b + 1) 3
 
 outcome :: Shape -> Shape -> Outcome
 outcome opp self
@@ -35,14 +32,10 @@ outcome opp self
   | otherwise = Draw
 
 shapeScore :: Shape -> Int
-shapeScore Rock = 1
-shapeScore Paper = 2
-shapeScore Scissors = 3
+shapeScore = succ . fromEnum
 
 outcomeScore :: Outcome -> Int
-outcomeScore Loss = 0
-outcomeScore Draw = 3
-outcomeScore Win = 6
+outcomeScore = (*3) . fromEnum
 
 action :: Shape -> Outcome -> Shape
 action opp outc = head $ filter ((==) outc . outcome opp) [Rock, Paper, Scissors]
