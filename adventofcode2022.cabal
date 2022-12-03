@@ -78,3 +78,9 @@ common rucksack-reorganization
 executable rucksack-reorganization
     import: rucksack-reorganization
     main-is: Main.hs
+test-suite rucksack-reorganization-test
+    import: rucksack-reorganization
+    main-is: Spec.hs
+benchmark rucksack-reorganization-bench
+    import: rucksack-reorganization
+    main-is: Bench.hs
