@@ -17,8 +17,8 @@ parseInput = some letterChar `endBy` newline
 compartments :: Rucksack -> ([Item], [Item])
 compartments = splitAt =<< (`div` 2) . length
 
-commonItem :: [Item] -> [Item] -> Item
-commonItem xs ys = head $ intersect xs ys
+commonItem :: ([Item], [Item]) -> Item
+commonItem = head . uncurry intersect
 
 priority :: Item -> Int
 priority item = fromJust . lookup item $ zip (['a' .. 'z'] ++ ['A' .. 'Z']) [1 .. 52]
@@ -30,7 +30,7 @@ badgeItem :: [Rucksack] -> Item
 badgeItem = head . foldr1 intersect
 
 part1 :: [Rucksack] -> String
-part1 = show . sum . map (priority . uncurry commonItem . compartments)
+part1 = show . sum . map (priority . commonItem . compartments)
 
 part2 :: [Rucksack] -> String
 part2 = show . sum . map (priority . badgeItem) . groups
