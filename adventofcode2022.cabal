@@ -70,3 +70,11 @@ test-suite rock-paper-scissors-test
 benchmark rock-paper-scissors-bench
     import: rock-paper-scissors
     main-is: Bench.hs
+
+common rucksack-reorganization
+    import: aoc
+    hs-source-dirs: 03_rucksack-reorganization
+    other-modules: RucksackReorganization
+executable rucksack-reorganization
+    import: rucksack-reorganization
+    main-is: Main.hs
