@@ -92,3 +92,9 @@ common camp-cleanup
 executable camp-cleanup
     import: camp-cleanup
     main-is: Main.hs
+test-suite camp-cleanup-test
+    import: camp-cleanup
+    main-is: Spec.hs
+benchmark camp-cleanup-bench
+    import: camp-cleanup
+    main-is: Bench.hs
