@@ -43,6 +43,11 @@ common aoc
         , vector
         , deepseq
 
+executable aoc-golfed
+    import: aoc
+    main-is: Golfed.hs
+    hs-source-dirs: golfed
+
 common calorie-counting
     import: aoc
     hs-source-dirs: 01_calorie-counting
