@@ -84,3 +84,11 @@ test-suite rucksack-reorganization-test
 benchmark rucksack-reorganization-bench
     import: rucksack-reorganization
     main-is: Bench.hs
+
+common camp-cleanup
+    import: aoc
+    hs-source-dirs: 04_camp-cleanup
+    other-modules: CampCleanup
+executable camp-cleanup
+    import: camp-cleanup
+    main-is: Main.hs
