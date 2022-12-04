@@ -17,8 +17,11 @@ parseInput = ((,) <$> sectionRange <* char ',' <*> sectionRange) `endBy` newline
 fullyContains :: SectionRange -> SectionRange -> Bool
 fullyContains (x1, x2) (y1, y2) = x1 <= y1 && x2 >= y2 || y1 <= x1 && y2 >= x2
 
+overlap :: SectionRange -> SectionRange -> Bool
+overlap (x1, x2) (y1, y2) = x2 >= y1 && x1 <= y2 || y2 >= x1 && y1 <= x2
+
 part1 :: [(SectionRange, SectionRange)] -> String
 part1 = show . length . filter (uncurry fullyContains)
 
 part2 :: [(SectionRange, SectionRange)] -> String
-part2 = undefined
+part2 = show . length . filter (uncurry overlap)
