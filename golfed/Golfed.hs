@@ -22,3 +22,7 @@ day02part2 = print . sum . map (\[a,_,x] -> let x' = ord x - 88 in (ord a - 65 +
 day03part1 = print . sum . map (maybe 0 succ . (`elemIndex` (['a'..'z']++['A'..])) . head . uncurry intersect . (splitAt =<< (`div` 2) . length)) . lines =<< readFile "03_rucksack-reorganization/input.txt"
 
 day03part2 = print . sum . map (maybe 0 succ . (`elemIndex` (['a' .. 'z'] ++ ['A' ..])) . head . foldr1 intersect) . chunksOf 3 . lines =<< readFile "03_rucksack-reorganization/input.txt"
+
+day04part1 = print . length . filter (\[[a,b],[c,d]] -> a<=c&&b>=d||c<=a&&d>=b) . map (map (map (read::String->Int) . splitOn "-") . splitOn ",") . lines =<< readFile "04_camp-cleanup/input.txt"
+
+day04part2 = print . length . filter (\[[a,b],[c,d]] -> b>=c&&a<=d||d>=a&&c<=b) . map (map (map (read::String -> Int) . splitOn "-") . splitOn ",") . lines =<< readFile "04_camp-cleanup/input.txt"
