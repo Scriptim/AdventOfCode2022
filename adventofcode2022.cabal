@@ -111,3 +111,9 @@ common supply-stacks
 executable supply-stacks
     import: supply-stacks
     main-is: Main.hs
+test-suite supply-stacks-test
+    import: supply-stacks
+    main-is: Spec.hs
+benchmark supply-stacks-bench
+    import: supply-stacks
+    main-is: Bench.hs

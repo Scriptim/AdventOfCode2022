@@ -1,9 +1,14 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module SupplyStacks (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Data.Char (isSpace)
 import Data.List (foldl', transpose)
 import Data.Text (pack)
+import GHC.Generics (Generic)
 import Text.Megaparsec (anySingle, endBy, sepBy, skipManyTill, (<|>))
 import Text.Megaparsec.Char (char, letterChar, newline, string)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -12,7 +17,7 @@ type Crate = Char
 
 type Stack = [Crate]
 
-data Move = Move Int Int Int
+data Move = Move Int Int Int deriving (Generic, NFData)
 
 parseInput :: Parser ([Stack], [Move])
 parseInput = (,) <$> stacks <* skipManyTill anySingle newline <* newline <*> move `endBy` newline
