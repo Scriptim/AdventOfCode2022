@@ -103,3 +103,11 @@ test-suite camp-cleanup-test
 benchmark camp-cleanup-bench
     import: camp-cleanup
     main-is: Bench.hs
+
+common supply-stacks
+    import: aoc
+    hs-source-dirs: 05_supply-stacks
+    other-modules: SupplyStacks
+executable supply-stacks
+    import: supply-stacks
+    main-is: Main.hs
