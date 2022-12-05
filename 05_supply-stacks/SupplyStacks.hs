@@ -24,13 +24,13 @@ parseInput = (,) <$> stacks <* skipManyTill anySingle newline <* newline <*> mov
 adjust :: (a -> a) -> Int -> [a] -> [a]
 adjust f n xs = take n xs ++ f (xs !! n) : drop (n + 1) xs
 
-performMove :: [Stack] -> Move -> [Stack]
-performMove stacks (Move n from to) = adjust (drop n) from $ adjust (crates ++) to stacks
+performMove :: Bool -> [Stack] -> Move -> [Stack]
+performMove moveMultiple stacks (Move n from to) = adjust (drop n) from $ adjust (crates ++) to stacks
   where
-    crates = reverse . take n $ stacks !! from
+    crates = (if moveMultiple then id else reverse) . take n $ stacks !! from
 
 part1 :: ([Stack], [Move]) -> String
-part1 = map head . uncurry (foldl' performMove)
+part1 = map head . uncurry (foldl' $ performMove False)
 
 part2 :: ([Stack], [Move]) -> String
-part2 = undefined
+part2 = map head . uncurry (foldl' $ performMove True)
