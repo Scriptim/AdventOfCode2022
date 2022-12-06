@@ -117,3 +117,11 @@ test-suite supply-stacks-test
 benchmark supply-stacks-bench
     import: supply-stacks
     main-is: Bench.hs
+
+common tuning-trouble
+    import: aoc
+    hs-source-dirs: 06_tuning-trouble
+    other-modules: TuningTrouble
+executable tuning-trouble
+    import: tuning-trouble
+    main-is: Main.hs
