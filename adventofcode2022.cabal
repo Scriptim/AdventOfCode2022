@@ -125,3 +125,9 @@ common tuning-trouble
 executable tuning-trouble
     import: tuning-trouble
     main-is: Main.hs
+test-suite tuning-trouble-test
+    import: tuning-trouble
+    main-is: Spec.hs
+benchmark tuning-trouble-bench
+    import: tuning-trouble
+    main-is: Bench.hs

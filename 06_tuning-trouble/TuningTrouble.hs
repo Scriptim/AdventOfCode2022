@@ -11,13 +11,13 @@ distinct :: Eq a => [a] -> Bool
 distinct [] = True
 distinct (x : xs) = notElem x xs && distinct xs
 
-marker :: [Char] -> Int
-marker xs
-  | distinct (take 4 xs) = 4
-  | otherwise = 1 + marker (tail xs)
+marker :: Int -> [Char] -> Int
+marker n xs
+  | distinct (take n xs) = n
+  | otherwise = 1 + marker n (tail xs)
 
 part1 :: [Char] -> String
-part1 = show . marker
+part1 = show . marker 4
 
 part2 :: [Char] -> String
-part2 = undefined
+part2 = show . marker 14
