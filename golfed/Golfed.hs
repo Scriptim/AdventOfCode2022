@@ -6,7 +6,7 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
 
 import Data.Char (ord)
-import Data.List (elemIndex, intersect, sort, transpose)
+import Data.List (elemIndex, intersect, nub, sort, transpose)
 import Data.List.Extra (trim)
 import Data.List.Split (chunksOf, splitOn)
 
@@ -32,3 +32,7 @@ day04part2 = print . length . filter (\[[a,b],[c,d]] -> b>=c&&a<=d||d>=a&&c<=b) 
 day05part1 = putStrLn . map head . uncurry (foldl (\s (n,f,t) -> let a f n xs = take n xs ++ f (xs !! n) : drop (n + 1) xs in a (drop n) f $ a ((reverse . take n $ s !! f) ++) t s)) . (\[a,b] -> (map trim . transpose . map (map (!!1) . chunksOf 4) . init $ a, map ((\[_,n,_,f,_,t] -> (read n, pred $ read f, pred $ read t)) . splitOn " ") b)) . map lines . splitOn "\n\n" =<< readFile "05_supply-stacks/input.txt"
 
 day05part2 = putStrLn . map head . uncurry (foldl (\s (n,f,t) -> let a f n xs = take n xs ++ f (xs !! n) : drop (n + 1) xs in a (drop n) f $ a ((take n $ s !! f) ++) t s)) . (\[a,b] -> (map trim . transpose . map (map (!!1) . chunksOf 4) . init $ a, map ((\[_,n,_,f,_,t] -> (read n, pred $ read f, pred $ read t)) . splitOn " ") b)) . map lines . splitOn "\n\n" =<< readFile "05_supply-stacks/input.txt"
+
+day06part1 = print . (let m x = if length (nub $ take 4 x) == 4 then 4 else 1 + m (tail x) in m) =<< readFile "06_tuning-trouble/input.txt"
+
+day06part2 = print . (let m x = if length (nub $ take 14 x) == 14 then 14 else 1 + m (tail x) in m) =<< readFile "06_tuning-trouble/input.txt"
