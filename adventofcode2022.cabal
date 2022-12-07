@@ -131,3 +131,11 @@ test-suite tuning-trouble-test
 benchmark tuning-trouble-bench
     import: tuning-trouble
     main-is: Bench.hs
+
+common no-space-left-on-device
+    import: aoc
+    hs-source-dirs: 07_no-space-left-on-device
+    other-modules: NoSpaceLeftOnDevice
+executable no-space-left-on-device
+    import: no-space-left-on-device
+    main-is: Main.hs
