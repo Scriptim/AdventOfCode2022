@@ -1,6 +1,7 @@
 module NoSpaceLeftOnDevice (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Data.List.Extra (minimumOn)
 import qualified Data.Map as M
 import Data.Text (pack)
 import Text.Megaparsec (endBy, some, (<|>))
@@ -61,4 +62,4 @@ part1 :: [Command] -> String
 part1 = show . sum . filter (<= 100000) . map size . dirs . buildTree
 
 part2 :: [Command] -> String
-part2 = undefined
+part2 = show . size . (\root -> minimumOn size $ filter ((> size root - 40000000) . size) (dirs root)) . buildTree
