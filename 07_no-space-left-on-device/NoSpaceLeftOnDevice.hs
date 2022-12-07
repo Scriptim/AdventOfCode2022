@@ -1,9 +1,14 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module NoSpaceLeftOnDevice (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Data.List.Extra (minimumOn)
 import qualified Data.Map as M
 import Data.Text (pack)
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, some, (<|>))
 import Text.Megaparsec.Char (char, letterChar, newline, space, string)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -14,11 +19,11 @@ type Filesize = Int
 
 type Path = [Filename]
 
-data Command = CD Filename | LS [OutputLine]
+data Command = CD Filename | LS [OutputLine] deriving (Generic, NFData)
 
-data OutputLine = FileLine Filesize Filename | DirectoryLine Filename
+data OutputLine = FileLine Filesize Filename | DirectoryLine Filename deriving (Generic, NFData)
 
-data FileTree = File Filesize | Directory (M.Map Filename FileTree)
+data FileTree = File Filesize | Directory (M.Map Filename FileTree) deriving (Generic, NFData)
 
 parseInput :: Parser [Command]
 parseInput = some command

@@ -139,3 +139,9 @@ common no-space-left-on-device
 executable no-space-left-on-device
     import: no-space-left-on-device
     main-is: Main.hs
+test-suite no-space-left-on-device-test
+    import: no-space-left-on-device
+    main-is: Spec.hs
+benchmark no-space-left-on-device-bench
+    import: no-space-left-on-device
+    main-is: Bench.hs
