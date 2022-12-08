@@ -154,3 +154,9 @@ common treetop-tree-house
 executable treetop-tree-house
     import: treetop-tree-house
     main-is: Main.hs
+test-suite treetop-tree-house-test
+    import: treetop-tree-house
+    main-is: Spec.hs
+benchmark treetop-tree-house-bench
+    import: treetop-tree-house
+    main-is: Bench.hs
