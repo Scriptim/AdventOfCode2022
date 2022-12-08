@@ -13,24 +13,41 @@ type TreeMap = M.Matrix Int
 parseInput :: Parser TreeMap
 parseInput = M.fromLists <$> some (read . singleton <$> digitChar) `endBy` newline
 
-visible :: TreeMap -> [(Int, Int)]
-visible trees = do
+viewingDirections :: TreeMap -> [((Int, Int), V.Vector Int, V.Vector Int, V.Vector Int, V.Vector Int)]
+viewingDirections trees = do
   row <- [1 .. M.nrows trees]
   col <- [1 .. M.ncols trees]
 
-  let height = M.getElem row col trees
-      rowV = M.getRow row trees
+  let rowV = M.getRow row trees
       colV = M.getCol col trees
       up = V.take (row - 1) colV
+      right = V.drop col rowV
       down = V.drop row colV
       left = V.take (col - 1) rowV
-      right = V.drop col rowV
 
-  guard $ V.all (< height) up || V.all (< height) down || V.all (< height) left || V.all (< height) right
-  return (col, row)
+  return ((row, col), up, right, down, left)
+
+visible :: TreeMap -> [(Int, Int)]
+visible trees = do
+  (center, up, right, down, left) <- viewingDirections trees
+  let height = trees M.! center
+  guard $ V.all (< height) up || V.all (< height) right || V.all (< height) down || V.all (< height) left
+  return center
+
+takeUntil :: (a -> Bool) -> V.Vector a -> V.Vector a
+takeUntil p vec = case V.findIndex p vec of
+  Nothing -> vec
+  Just i -> V.take (i + 1) vec
+
+scenicScores :: TreeMap -> [Int]
+scenicScores trees = do
+  (center, up, right, down, left) <- viewingDirections trees
+  let height = trees M.! center
+      distance = V.length . takeUntil (>= height)
+  return $ distance (V.reverse up) * distance right * distance down * distance (V.reverse left)
 
 part1 :: TreeMap -> String
 part1 = show . length . visible
 
 part2 :: TreeMap -> String
-part2 = undefined
+part2 = show . maximum . scenicScores
