@@ -41,6 +41,7 @@ common aoc
         , megaparsec
         , containers
         , vector
+        , matrix
         , deepseq
 
 executable aoc-golfed
@@ -145,3 +146,11 @@ test-suite no-space-left-on-device-test
 benchmark no-space-left-on-device-bench
     import: no-space-left-on-device
     main-is: Bench.hs
+
+common treetop-tree-house
+    import: aoc
+    hs-source-dirs: 08_treetop-tree-house
+    other-modules: TreetopTreeHouse
+executable treetop-tree-house
+    import: treetop-tree-house
+    main-is: Main.hs
