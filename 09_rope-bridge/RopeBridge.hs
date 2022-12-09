@@ -1,16 +1,21 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module RopeBridge (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Data.List (nub)
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, (<|>))
 import Text.Megaparsec.Char (char, newline, space)
 import Text.Megaparsec.Char.Lexer (decimal)
 
 type Coordinate = (Int, Int)
 
-data Direction = U | R | D | L
+data Direction = U | R | D | L deriving (Generic, NFData)
 
-data Movement = Move Direction Int
+data Movement = Move Direction Int deriving (Generic, NFData)
 
 parseInput :: Parser [Movement]
 parseInput = (Move <$> direction <* space <*> decimal) `endBy` newline

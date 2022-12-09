@@ -168,3 +168,9 @@ common rope-bridge
 executable rope-bridge
     import: rope-bridge
     main-is: Main.hs
+test-suite rope-bridge-test
+    import: rope-bridge
+    main-is: Spec.hs
+benchmark rope-bridge-bench
+    import: rope-bridge
+    main-is: Bench.hs
