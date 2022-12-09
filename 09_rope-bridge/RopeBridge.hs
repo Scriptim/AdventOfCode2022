@@ -28,16 +28,17 @@ pullTail (hx, hy) tailPos@(tx, ty)
   | abs (hx - tx) <= 1 && abs (hy - ty) <= 1 = tailPos
   | otherwise = (tx + signum (hx - tx), ty + signum (hy - ty))
 
-step :: (Coordinate, Coordinate) -> Direction -> (Coordinate, Coordinate)
-step (headPos, tailPos) dir = (headPos', tailPos')
-  where
-    headPos' = move headPos dir
-    tailPos' = pullTail headPos' tailPos
+step :: [Coordinate] -> Direction -> [Coordinate]
+step [] _ = []
+step (headPos : rope) dir = scanl pullTail (move headPos dir) rope
 
-part1 :: [Movement] -> String
-part1 = show . length . nub . map snd . scanl step ((0, 0), (0, 0)) . concatMap chop
+traceTail :: Int -> [Movement] -> [Coordinate]
+traceTail ropeLength = map last . scanl step (replicate ropeLength (0, 0)) . concatMap chop
   where
     chop (Move dir n) = replicate n dir
 
+part1 :: [Movement] -> String
+part1 = show . length . nub . traceTail 2
+
 part2 :: [Movement] -> String
-part2 = undefined
+part2 = show . length . nub . traceTail 10
