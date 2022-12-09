@@ -160,3 +160,11 @@ test-suite treetop-tree-house-test
 benchmark treetop-tree-house-bench
     import: treetop-tree-house
     main-is: Bench.hs
+
+common rope-bridge
+    import: aoc
+    hs-source-dirs: 09_rope-bridge
+    other-modules: RopeBridge
+executable rope-bridge
+    import: rope-bridge
+    main-is: Main.hs
