@@ -174,3 +174,11 @@ test-suite rope-bridge-test
 benchmark rope-bridge-bench
     import: rope-bridge
     main-is: Bench.hs
+
+common cathode-ray-tube
+    import: aoc
+    hs-source-dirs: 10_cathode-ray-tube
+    other-modules: CathodeRayTube
+executable cathode-ray-tube
+    import: cathode-ray-tube
+    main-is: Main.hs
