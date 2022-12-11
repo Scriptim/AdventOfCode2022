@@ -1,6 +1,7 @@
 module CathodeRayTube (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Data.List.Extra (chunksOf)
 import Data.Text (pack)
 import Text.Megaparsec (endBy, (<|>))
 import Text.Megaparsec.Char (newline, string)
@@ -23,8 +24,13 @@ execute = (1 :) . go 1
 signalStrengthsSum :: [Int] -> Int
 signalStrengthsSum = sum . (flip map [19, 59 .. 219] . (!!)) . zipWith (*) [1 ..]
 
+draw :: [Int] -> [String]
+draw = chunksOf 40 . zipWith drawPixel [0 .. 239]
+  where
+    drawPixel pixel spriteCenter = if abs (pixel `mod` 40 - spriteCenter `rem` 40) <= 1 then '#' else '.'
+
 part1 :: [Instruction] -> String
 part1 = show . signalStrengthsSum . execute
 
 part2 :: [Instruction] -> String
-part2 = undefined
+part2 = unlines . ([] :) . draw . execute
