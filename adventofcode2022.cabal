@@ -188,3 +188,11 @@ test-suite cathode-ray-tube-test
 benchmark cathode-ray-tube-bench
     import: cathode-ray-tube
     main-is: Bench.hs
+
+common monkey-in-the-middle
+    import: aoc
+    hs-source-dirs: 11_monkey-in-the-middle
+    other-modules: MonkeyInTheMiddle
+executable monkey-in-the-middle
+    import: monkey-in-the-middle
+    main-is: Main.hs
