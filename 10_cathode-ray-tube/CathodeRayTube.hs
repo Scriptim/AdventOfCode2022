@@ -1,13 +1,18 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module CathodeRayTube (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Data.List.Extra (chunksOf)
 import Data.Text (pack)
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, (<|>))
 import Text.Megaparsec.Char (newline, string)
 import Text.Megaparsec.Char.Lexer (decimal, signed)
 
-data Instruction = Noop | AddX Int
+data Instruction = Noop | AddX Int deriving (Generic, NFData)
 
 parseInput :: Parser [Instruction]
 parseInput = instruction `endBy` newline

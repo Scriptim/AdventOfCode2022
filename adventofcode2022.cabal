@@ -182,3 +182,9 @@ common cathode-ray-tube
 executable cathode-ray-tube
     import: cathode-ray-tube
     main-is: Main.hs
+test-suite cathode-ray-tube-test
+    import: cathode-ray-tube
+    main-is: Spec.hs
+benchmark cathode-ray-tube-bench
+    import: cathode-ray-tube
+    main-is: Bench.hs
