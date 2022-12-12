@@ -210,3 +210,9 @@ common hill-climbing-algorithm
 executable hill-climbing-algorithm
     import: hill-climbing-algorithm
     main-is: Main.hs
+test-suite hill-climbing-algorithm-test
+    import: hill-climbing-algorithm
+    main-is: Spec.hs
+benchmark hill-climbing-algorithm-bench
+    import: hill-climbing-algorithm
+    main-is: Bench.hs
