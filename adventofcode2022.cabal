@@ -196,3 +196,9 @@ common monkey-in-the-middle
 executable monkey-in-the-middle
     import: monkey-in-the-middle
     main-is: Main.hs
+test-suite monkey-in-the-middle-test
+    import: monkey-in-the-middle
+    main-is: Spec.hs
+benchmark monkey-in-the-middle-bench
+    import: monkey-in-the-middle
+    main-is: Bench.hs

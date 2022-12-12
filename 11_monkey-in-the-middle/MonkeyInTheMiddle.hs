@@ -1,9 +1,14 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module MonkeyInTheMiddle (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import qualified Data.IntMap as M
 import Data.List (sortBy)
 import Data.Text (pack)
+import GHC.Generics (Generic)
 import Text.Megaparsec (sepBy, (<|>))
 import Text.Megaparsec.Char (char, newline, space, string)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -15,6 +20,7 @@ data Monkey = Monkey
     ifTrueMonkey :: Int,
     ifFalseMonkey :: Int
   }
+  deriving (Generic, NFData)
 
 parseInput :: Parser [Monkey]
 parseInput = monkeyP `sepBy` newline
