@@ -30,8 +30,8 @@ parseInput = monkeyP `sepBy` newline
     testActionP = space *> testActionPrefixP *> decimal
     testActionPrefixP = string (pack "If true: throw to monkey ") <|> string (pack "If false: throw to monkey ")
 
-inspectAndThrow :: M.IntMap (Monkey, Int) -> Int -> M.IntMap (Monkey, Int)
-inspectAndThrow monkeys monkeyId =
+inspectAndThrow :: Bool -> Int -> M.IntMap (Monkey, Int) -> Int -> M.IntMap (Monkey, Int)
+inspectAndThrow bore ring monkeys monkeyId =
   let (monkey, inspections) = monkeys M.! monkeyId
    in case itemQueue monkey of
         [] -> monkeys
@@ -41,23 +41,24 @@ inspectAndThrow monkeys monkeyId =
             throw = M.insert throwTo (throwToMonkey {itemQueue = itemQueue throwToMonkey ++ [worryLevel]}, throwToMonkeyInspections)
             throwTo = if worryLevel `mod` testDivisor monkey == 0 then ifTrueMonkey monkey else ifFalseMonkey monkey
             (throwToMonkey, throwToMonkeyInspections) = monkeys M.! throwTo
-            worryLevel = operation monkey item `div` 3
+            worryLevel = operation monkey item `div` (if bore then 3 else 1) `mod` ring
 
-monkeyRound :: M.IntMap (Monkey, Int) -> M.IntMap (Monkey, Int)
-monkeyRound = go =<< enumFromTo 0 . pred . M.size
+monkeyRound :: Bool -> Int -> M.IntMap (Monkey, Int) -> M.IntMap (Monkey, Int)
+monkeyRound bore ring = go =<< enumFromTo 0 . pred . M.size
   where
     go [] monkeys = monkeys
     go monkeyIds@(monkeyId : rest) monkeys
       | null . itemQueue . fst $ monkeys M.! monkeyId = go rest monkeys
-      | otherwise = go monkeyIds (inspectAndThrow monkeys monkeyId)
+      | otherwise = go monkeyIds (inspectAndThrow bore ring monkeys monkeyId)
 
-countInspections :: [Monkey] -> [Int]
-countInspections monkeys = map (snd . snd) . M.toList $ iterate monkeyRound monkeyMap !! 20
+countInspections :: Bool -> Int -> [Monkey] -> [Int]
+countInspections bore rounds monkeys = map (snd . snd) . M.toList $ iterate (monkeyRound bore ring) monkeyMap !! rounds
   where
     monkeyMap = M.fromList . zip [0 ..] $ zip monkeys (repeat 0)
+    ring = foldl1 lcm $ map testDivisor monkeys
 
 part1 :: [Monkey] -> String
-part1 = show . product . take 2 . sortBy (flip compare) . countInspections
+part1 = show . product . take 2 . sortBy (flip compare) . countInspections True 20
 
 part2 :: [Monkey] -> String
-part2 = undefined
+part2 = show . product . take 2 . sortBy (flip compare) . countInspections False 10000
