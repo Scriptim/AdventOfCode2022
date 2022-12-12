@@ -12,6 +12,7 @@ import qualified Data.Set as S
 import Data.Tuple.Extra (uncurry3)
 import Text.Megaparsec (endBy, some)
 import Text.Megaparsec.Char (letterChar, newline)
+import Data.Maybe (isJust, fromMaybe)
 
 type Coordinate = (Int, Int)
 
@@ -29,8 +30,8 @@ parseInput = extractPositions <$> heightMap
           fullHeightMap = M.insert goal 'z' . M.insert start 'a' $ M.fromAscList heightMap'
        in (fullHeightMap, start, goal)
 
-shortestPathLength :: HeightMap -> Coordinate -> Coordinate -> Int
-shortestPathLength heightMap start goal = go initOpen initPathLengths initEstimates
+shortestPathLengthFixedStart :: HeightMap -> Coordinate -> Coordinate -> Maybe Int
+shortestPathLengthFixedStart heightMap start goal = go initOpen initPathLengths initEstimates
   where
     maxBoundMap = M.fromAscList $ zip (M.keys heightMap) (repeat maxBound)
     heuristic node = abs (fst node - fst goal) + abs (snd node - snd goal)
@@ -38,8 +39,8 @@ shortestPathLength heightMap start goal = go initOpen initPathLengths initEstima
     initPathLengths = M.insert start 0 maxBoundMap
     initEstimates = M.insert start (heuristic start) maxBoundMap
     go open pathLengths estimates
-      | S.null open = error "no path found"
-      | current == goal = pathLengths M.! goal
+      | S.null open = Nothing
+      | current == goal = Just $ pathLengths M.! goal
       | otherwise = uncurry3 go $ foldl handleNeighbor (S.delete current open, pathLengths, estimates) neighbors
       where
         current@(row, col) = minimumOn (estimates M.!) (S.toList open)
@@ -52,8 +53,14 @@ shortestPathLength heightMap start goal = go initOpen initPathLengths initEstima
           where
             score = succ $ pathLengths' M.! current
 
+shortestPathLength :: HeightMap -> Coordinate -> Int
+shortestPathLength heightMap goal = minimum . map (fromMaybe undefined) . filter isJust $ shortestPathLengths
+  where
+    shortestPathLengths = map (\start -> shortestPathLengthFixedStart heightMap start goal) starts
+    starts = map fst . filter ((=='a') . snd) $ M.toList heightMap
+
 part1 :: (HeightMap, Coordinate, Coordinate) -> String
-part1 (heightMap, start, goal) = show $ shortestPathLength heightMap start goal
+part1 (heightMap, start, goal) = show . fromMaybe undefined $ shortestPathLengthFixedStart heightMap start goal
 
 part2 :: (HeightMap, Coordinate, Coordinate) -> String
-part2 = undefined
+part2 (heightMap, _, goal) = show $ shortestPathLength heightMap goal
