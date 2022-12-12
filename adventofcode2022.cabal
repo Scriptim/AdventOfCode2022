@@ -202,3 +202,11 @@ test-suite monkey-in-the-middle-test
 benchmark monkey-in-the-middle-bench
     import: monkey-in-the-middle
     main-is: Bench.hs
+
+common hill-climbing-algorithm
+    import: aoc
+    hs-source-dirs: 12_hill-climbing-algorithm
+    other-modules: HillClimbingAlgorithm
+executable hill-climbing-algorithm
+    import: hill-climbing-algorithm
+    main-is: Main.hs
