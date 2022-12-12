@@ -3,16 +3,12 @@
 module HillClimbingAlgorithm (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
-import Control.Applicative (Applicative (liftA2))
 import Data.Bifunctor (Bifunctor (first))
 import Data.Char (ord)
-import Data.List.Extra (minimumOn)
+import Data.List.Extra (minimumOn, delete, intersect)
 import qualified Data.Map as M
-import qualified Data.Set as S
-import Data.Tuple.Extra (uncurry3)
 import Text.Megaparsec (endBy, some)
 import Text.Megaparsec.Char (letterChar, newline)
-import Data.Maybe (isJust, fromMaybe)
 
 type Coordinate = (Int, Int)
 
@@ -23,44 +19,39 @@ parseInput = extractPositions <$> heightMap
   where
     heightMap = buildMap . zip [0 ..] <$> (zip [0 ..] <$> some letterChar) `endBy` newline
     buildMap = concatMap (\(rowNum, row) -> map (first (rowNum,)) row)
-    position x = fst . head . filter ((== x) . snd)
+    findCoordinate x = fst . head . filter ((== x) . snd)
     extractPositions heightMap' =
-      let start = position 'S' heightMap'
-          goal = position 'E' heightMap'
-          fullHeightMap = M.insert goal 'z' . M.insert start 'a' $ M.fromAscList heightMap'
-       in (fullHeightMap, start, goal)
+      let position = findCoordinate 'S' heightMap'
+          bestSignal = findCoordinate 'E' heightMap'
+          fullHeightMap = M.insert bestSignal 'z' . M.insert position 'a' $ M.fromAscList heightMap'
+       in (fullHeightMap, position, bestSignal)
 
-shortestPathLengthFixedStart :: HeightMap -> Coordinate -> Coordinate -> Maybe Int
-shortestPathLengthFixedStart heightMap start goal = go initOpen initPathLengths initEstimates
+dijkstra :: HeightMap -> Maybe Coordinate -> [Coordinate] -> M.Map Coordinate Int -> M.Map Coordinate Int
+dijkstra _ _ [] dist = dist
+dijkstra heightMap shortCircuitTarget queue dist
+  | Just current == shortCircuitTarget = dist
+  | otherwise = dijkstra heightMap shortCircuitTarget (delete current queue) (foldl handleNeighbor dist neighbors)
   where
-    maxBoundMap = M.fromAscList $ zip (M.keys heightMap) (repeat maxBound)
-    heuristic node = abs (fst node - fst goal) + abs (snd node - snd goal)
-    initOpen = S.singleton start
-    initPathLengths = M.insert start 0 maxBoundMap
-    initEstimates = M.insert start (heuristic start) maxBoundMap
-    go open pathLengths estimates
-      | S.null open = Nothing
-      | current == goal = Just $ pathLengths M.! goal
-      | otherwise = uncurry3 go $ foldl handleNeighbor (S.delete current open, pathLengths, estimates) neighbors
-      where
-        current@(row, col) = minimumOn (estimates M.!) (S.toList open)
-        neighbors = filter (liftA2 (&&) valid reachable) [(row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)]
-        valid = flip M.member heightMap
-        reachable (row', col') = ord (heightMap M.! (row', col')) - ord (heightMap M.! (row, col)) <= 1
-        handleNeighbor prevState@(open', pathLengths', estimates') neighbor
-          | score >= pathLengths' M.! neighbor = prevState
-          | otherwise = (S.insert neighbor open', M.insert neighbor score pathLengths', M.insert neighbor (score + heuristic neighbor) estimates')
-          where
-            score = succ $ pathLengths' M.! current
+    current@(row, col) = minimumOn (dist M.!) queue
+    neighbors = filter connected ([(succ row, col), (pred row, col), (row, succ col), (row, pred col)] `intersect` queue)
+    connected (row', col') = ord (heightMap M.! (row, col)) - ord (heightMap M.! (row', col')) <= 1
+    handleNeighbor dist' neighbor = M.insertWith min neighbor (boundedSucc $ dist M.! current) dist'
+    boundedSucc x = if x == maxBound then x else succ x
 
-shortestPathLength :: HeightMap -> Coordinate -> Int
-shortestPathLength heightMap goal = minimum . map (fromMaybe undefined) . filter isJust $ shortestPathLengths
+shortestPathLengths :: HeightMap -> Maybe Coordinate -> Coordinate -> M.Map Coordinate Int
+shortestPathLengths heightMap shortCircuitTarget source = dijkstra heightMap shortCircuitTarget initQueue initDist
   where
-    shortestPathLengths = map (\start -> shortestPathLengthFixedStart heightMap start goal) starts
-    starts = map fst . filter ((=='a') . snd) $ M.toList heightMap
+    initQueue = M.keys heightMap
+    initDist = M.insert source 0 . M.fromAscList $ zip (M.keys heightMap) (repeat maxBound)
+
+shortestFullPathLength :: HeightMap -> Coordinate -> Int
+shortestFullPathLength heightMap source = minimum $ map (pathLengths M.!) startPoints
+  where
+    startPoints = M.keys $ M.filter (=='a') heightMap
+    pathLengths = shortestPathLengths heightMap Nothing source
 
 part1 :: (HeightMap, Coordinate, Coordinate) -> String
-part1 (heightMap, start, goal) = show . fromMaybe undefined $ shortestPathLengthFixedStart heightMap start goal
+part1 (heightMap, position, bestSignal) = show $ shortestPathLengths heightMap (Just position) bestSignal M.! position
 
 part2 :: (HeightMap, Coordinate, Coordinate) -> String
-part2 (heightMap, _, goal) = show $ shortestPathLength heightMap goal
+part2 (heightMap, _, bestSignal) = show $ shortestFullPathLength heightMap bestSignal
