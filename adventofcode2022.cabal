@@ -216,3 +216,11 @@ test-suite hill-climbing-algorithm-test
 benchmark hill-climbing-algorithm-bench
     import: hill-climbing-algorithm
     main-is: Bench.hs
+
+common distress-signal
+    import: aoc
+    hs-source-dirs: 13_distress-signal
+    other-modules: DistressSignal
+executable distress-signal
+    import: distress-signal
+    main-is: Main.hs
