@@ -23,10 +23,7 @@ parseInput = packetPair `sepBy` newline
 
 instance Ord Packet where
   compare (PacketValue x) (PacketValue y) = compare x y
-  compare (PacketList (x : xs)) (PacketList (y : ys)) = if x == y then compare (PacketList xs) (PacketList ys) else compare x y
-  compare (PacketList []) (PacketList []) = EQ
-  compare (PacketList []) (PacketList _) = LT
-  compare (PacketList _) (PacketList []) = GT
+  compare (PacketList xs) (PacketList ys) = compare xs ys
   compare (PacketValue x) (PacketList ys) = compare (PacketList [PacketValue x]) (PacketList ys)
   compare (PacketList xs) (PacketValue y) = compare (PacketList xs) (PacketList [PacketValue y])
 
