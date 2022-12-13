@@ -224,3 +224,9 @@ common distress-signal
 executable distress-signal
     import: distress-signal
     main-is: Main.hs
+test-suite distress-signal-test
+    import: distress-signal
+    main-is: Spec.hs
+benchmark distress-signal-bench
+    import: distress-signal
+    main-is: Bench.hs

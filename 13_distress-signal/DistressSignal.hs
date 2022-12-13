@@ -1,12 +1,17 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module DistressSignal (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Data.List (sort)
+import GHC.Generics (Generic)
 import Text.Megaparsec (between, sepBy, (<|>))
 import Text.Megaparsec.Char (char, newline)
 import Text.Megaparsec.Char.Lexer (decimal)
 
-data Packet = PacketList [Packet] | PacketValue Int deriving (Eq)
+data Packet = PacketList [Packet] | PacketValue Int deriving (Eq, Generic, NFData)
 
 parseInput :: Parser [(Packet, Packet)]
 parseInput = packetPair `sepBy` newline
