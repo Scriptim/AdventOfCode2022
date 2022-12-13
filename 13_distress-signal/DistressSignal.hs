@@ -1,6 +1,7 @@
 module DistressSignal (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Data.List (sort)
 import Text.Megaparsec (between, sepBy, (<|>))
 import Text.Megaparsec.Char (char, newline)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -24,8 +25,11 @@ instance Ord Packet where
   compare (PacketValue x) (PacketList ys) = compare (PacketList [PacketValue x]) (PacketList ys)
   compare (PacketList xs) (PacketValue y) = compare (PacketList xs) (PacketList [PacketValue y])
 
+dividers :: [Packet]
+dividers = [PacketList [PacketList [PacketValue 2]], PacketList [PacketList [PacketValue 6]]]
+
 part1 :: [(Packet, Packet)] -> String
 part1 = show . sum . map fst . filter (uncurry (<=) . snd) . zip [(1 :: Int) ..]
 
 part2 :: [(Packet, Packet)] -> String
-part2 = undefined
+part2 = show . product . map fst . filter ((`elem` dividers) . snd) . zip [(1 :: Int) ..] . sort . (dividers ++) . concatMap (\(a, b) -> [a, b])
