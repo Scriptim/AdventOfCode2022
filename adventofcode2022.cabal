@@ -230,3 +230,11 @@ test-suite distress-signal-test
 benchmark distress-signal-bench
     import: distress-signal
     main-is: Bench.hs
+
+common regolith-reservoir
+    import: aoc
+    hs-source-dirs: 14_regolith-reservoir
+    other-modules: RegolithReservoir
+executable regolith-reservoir
+    import: regolith-reservoir
+    main-is: Main.hs
