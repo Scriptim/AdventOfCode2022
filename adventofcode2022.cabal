@@ -244,3 +244,11 @@ test-suite regolith-reservoir-test
 benchmark regolith-reservoir-bench
     import: regolith-reservoir
     main-is: Bench.hs
+
+common beacon-exclusion-zone
+    import: aoc
+    hs-source-dirs: 15_beacon-exclusion-zone
+    other-modules: BeaconExclusionZone
+executable beacon-exclusion-zone
+    import: beacon-exclusion-zone
+    main-is: Main.hs
