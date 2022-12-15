@@ -1,6 +1,7 @@
 module BeaconExclusionZone (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.Monad (guard)
 import Data.Text (pack)
 import Text.Megaparsec (endBy)
 import Text.Megaparsec.Char (newline, string)
@@ -30,8 +31,23 @@ row sensors y = [(x, y) | x <- [(leftSensor - maxSensorRange) .. (rightSensor + 
     leftSensor = minimum . map (fst . fst) $ sensors
     rightSensor = maximum . map (fst . fst) $ sensors
 
+sensorCircle :: Sensor -> [Coordinate]
+sensorCircle (sensor@(x, y), beacon) = do
+  let radius = succ $ distance sensor beacon
+  xDelta <- [-radius .. radius]
+  yDelta <- [abs xDelta - radius, radius - abs xDelta]
+  return (x + xDelta, y + yDelta)
+
+undetected :: [Sensor] -> [Coordinate]
+undetected sensors = do
+  coord@(x, y) <- concatMap sensorCircle sensors
+  guard $ x >= 0 && x <= 4000000 && y >= 0 && y <= 4000000
+  guard $ beaconable sensors coord
+  guard $ coord `notElem` map fst sensors
+  return coord
+
 part1 :: [Sensor] -> String
 part1 sensors = show . length . filter (not . beaconable sensors) $ row sensors 2000000
 
 part2 :: [Sensor] -> String
-part2 = undefined
+part2 = show . (\(x, y) -> x * 4000000 + y) . head . undetected
