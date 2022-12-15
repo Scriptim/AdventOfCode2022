@@ -252,3 +252,9 @@ common beacon-exclusion-zone
 executable beacon-exclusion-zone
     import: beacon-exclusion-zone
     main-is: Main.hs
+test-suite beacon-exclusion-zone-test
+    import: beacon-exclusion-zone
+    main-is: Spec.hs
+benchmark beacon-exclusion-zone-bench
+    import: beacon-exclusion-zone
+    main-is: Bench.hs
