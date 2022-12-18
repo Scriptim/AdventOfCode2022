@@ -266,3 +266,9 @@ common boiling-boulders
 executable boiling-boulders
     import: boiling-boulders
     main-is: Main.hs
+test-suite boiling-boulders-test
+    import: boiling-boulders
+    main-is: Spec.hs
+benchmark boiling-boulders-bench
+    import: boiling-boulders
+    main-is: Bench.hs
