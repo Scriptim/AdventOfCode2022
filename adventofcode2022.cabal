@@ -258,3 +258,11 @@ test-suite beacon-exclusion-zone-test
 benchmark beacon-exclusion-zone-bench
     import: beacon-exclusion-zone
     main-is: Bench.hs
+
+common boiling-boulders
+    import: aoc
+    hs-source-dirs: 18_boiling-boulders
+    other-modules: BoilingBoulders
+executable boiling-boulders
+    import: boiling-boulders
+    main-is: Main.hs
