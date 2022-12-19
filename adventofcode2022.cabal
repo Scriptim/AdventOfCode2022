@@ -259,6 +259,20 @@ benchmark beacon-exclusion-zone-bench
     import: beacon-exclusion-zone
     main-is: Bench.hs
 
+common pyroclastic-flow
+    import: aoc
+    hs-source-dirs: 17_pyroclastic-flow
+    other-modules: PyroclasticFlow
+executable pyroclastic-flow
+    import: pyroclastic-flow
+    main-is: Main.hs
+test-suite pyroclastic-flow-test
+    import: pyroclastic-flow
+    main-is: Spec.hs
+benchmark pyroclastic-flow-bench
+    import: pyroclastic-flow
+    main-is: Bench.hs
+
 common boiling-boulders
     import: aoc
     hs-source-dirs: 18_boiling-boulders
