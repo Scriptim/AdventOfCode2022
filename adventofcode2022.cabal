@@ -294,3 +294,9 @@ common grove-positioning-system
 executable grove-positioning-system
     import: grove-positioning-system
     main-is: Main.hs
+test-suite grove-positioning-system-test
+    import: grove-positioning-system
+    main-is: Spec.hs
+benchmark grove-positioning-system-bench
+    import: grove-positioning-system
+    main-is: Bench.hs
