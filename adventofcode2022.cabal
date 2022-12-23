@@ -300,3 +300,11 @@ test-suite grove-positioning-system-test
 benchmark grove-positioning-system-bench
     import: grove-positioning-system
     main-is: Bench.hs
+
+common monkey-math
+    import: aoc
+    hs-source-dirs: 21_monkey-math
+    other-modules: MonkeyMath
+executable monkey-math
+    import: monkey-math
+    main-is: Main.hs
