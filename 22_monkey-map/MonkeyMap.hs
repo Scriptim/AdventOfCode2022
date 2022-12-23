@@ -1,13 +1,17 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TupleSections #-}
 
 module MonkeyMap (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Control.Monad (guard)
 import Data.List.Extra (groupOn, maximumOn, minimumOn)
 import Data.Maybe (fromJust)
 import qualified Data.Set as S
 import Data.Tuple.Extra (both)
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, some, (<|>))
 import Text.Megaparsec.Char (char, newline)
 import Text.Megaparsec.Char.Lexer (decimal)
@@ -20,12 +24,13 @@ data MonkeyMap = MonkeyMap
   { squareSize :: Int,
     squares :: [(Coordinate, Square)]
   }
+  deriving (Generic, NFData)
 
-data Tile = Void | Open | Wall deriving (Eq)
+data Tile = Void | Open | Wall deriving (Eq, Generic, NFData)
 
-data Movement = Forward Int | TurnLeft | TurnRight
+data Movement = Forward Int | TurnLeft | TurnRight deriving (Generic, NFData)
 
-data Direction = East | South | West | North deriving (Enum)
+data Direction = East | South | West | North deriving (Enum, Generic, NFData)
 
 boardToMonkeyMap :: [[Tile]] -> MonkeyMap
 boardToMonkeyMap board = MonkeyMap squareSize' (filter (not . S.null . snd) squares')

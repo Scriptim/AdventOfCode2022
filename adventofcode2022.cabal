@@ -322,3 +322,9 @@ common monkey-map
 executable monkey-map
     import: monkey-map
     main-is: Main.hs
+test-suite monkey-map-test
+    import: monkey-map
+    main-is: Spec.hs
+benchmark monkey-map-bench
+    import: monkey-map
+    main-is: Bench.hs
