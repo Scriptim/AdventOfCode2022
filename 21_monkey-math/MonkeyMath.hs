@@ -1,15 +1,20 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module MonkeyMath (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
+import Control.DeepSeq (NFData)
 import Control.Monad (replicateM)
 import qualified Data.Map as M
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, (<|>))
 import Text.Megaparsec.Char (char, lowerChar, newline, space)
 import Text.Megaparsec.Char.Lexer (decimal)
 
-data Monkey = MonkeyYell Int | MonkeyAdd String String | MonkeyMul String String | MonkeySub String String | MonkeyDiv String String | MonkeyUnknown
+data Monkey = MonkeyYell Int | MonkeyAdd String String | MonkeyMul String String | MonkeySub String String | MonkeyDiv String String | MonkeyUnknown deriving (Generic, NFData)
 
-data Expr = Lit Int | Add Expr Expr | Mul Expr Expr | Sub Expr Expr | Div Expr Expr | Unknown
+data Expr = Lit Int | Add Expr Expr | Mul Expr Expr | Sub Expr Expr | Div Expr Expr | Unknown deriving (Generic, NFData)
 
 parseInput :: Parser (M.Map String Monkey)
 parseInput = M.fromList <$> line `endBy` newline

@@ -308,3 +308,9 @@ common monkey-math
 executable monkey-math
     import: monkey-math
     main-is: Main.hs
+test-suite monkey-math-test
+    import: monkey-math
+    main-is: Spec.hs
+benchmark monkey-math-bench
+    import: monkey-math
+    main-is: Bench.hs
