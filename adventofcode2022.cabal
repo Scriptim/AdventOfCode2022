@@ -314,3 +314,11 @@ test-suite monkey-math-test
 benchmark monkey-math-bench
     import: monkey-math
     main-is: Bench.hs
+
+common monkey-map
+    import: aoc
+    hs-source-dirs: 22_monkey-map
+    other-modules: MonkeyMap
+executable monkey-map
+    import: monkey-map
+    main-is: Main.hs
