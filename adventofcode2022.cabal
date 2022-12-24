@@ -328,3 +328,11 @@ test-suite monkey-map-test
 benchmark monkey-map-bench
     import: monkey-map
     main-is: Bench.hs
+
+common unstable-diffusion
+    import: aoc
+    hs-source-dirs: 23_unstable-diffusion
+    other-modules: UnstableDiffusion
+executable unstable-diffusion
+    import: unstable-diffusion
+    main-is: Main.hs
