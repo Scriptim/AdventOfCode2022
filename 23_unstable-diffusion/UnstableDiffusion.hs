@@ -56,8 +56,12 @@ emptyTiles = liftA2 (-) regionSize S.size
     bounds accu [] = accu
     bounds ((top, bottom), (left, right)) ((row, col) : rest) = bounds ((min top row, max bottom row), (min left col, max right col)) rest
 
+fixPoint :: [(Int, Board)] -> Int
+fixPoint (state1 : state2 : states) = if snd state1 == snd state2 then fst state2 else fixPoint (state2 : states)
+fixPoint _ = undefined
+
 part1 :: Board -> String
 part1 = show . emptyTiles . (!! 10) . boardStates
 
 part2 :: Board -> String
-part2 = undefined
+part2 = show . fixPoint . zip [0 ..] . boardStates
