@@ -336,3 +336,9 @@ common unstable-diffusion
 executable unstable-diffusion
     import: unstable-diffusion
     main-is: Main.hs
+test-suite unstable-diffusion-test
+    import: unstable-diffusion
+    main-is: Spec.hs
+benchmark unstable-diffusion-bench
+    import: unstable-diffusion
+    main-is: Bench.hs
