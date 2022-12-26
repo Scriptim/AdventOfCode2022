@@ -343,6 +343,14 @@ benchmark unstable-diffusion-bench
     import: unstable-diffusion
     main-is: Bench.hs
 
+common blizzard-basin
+    import: aoc
+    hs-source-dirs: 24_blizzard-basin
+    other-modules: BlizzardBasin
+executable blizzard-basin
+    import: blizzard-basin
+    main-is: Main.hs
+
 common full-of-hot-air
     import: aoc
     hs-source-dirs: 25_full-of-hot-air
