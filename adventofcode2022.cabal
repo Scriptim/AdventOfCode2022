@@ -350,6 +350,12 @@ common blizzard-basin
 executable blizzard-basin
     import: blizzard-basin
     main-is: Main.hs
+test-suite blizzard-basin-test
+    import: blizzard-basin
+    main-is: Spec.hs
+benchmark blizzard-basin-bench
+    import: blizzard-basin
+    main-is: Bench.hs
 
 common full-of-hot-air
     import: aoc

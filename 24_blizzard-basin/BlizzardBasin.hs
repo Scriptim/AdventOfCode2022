@@ -1,18 +1,23 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module BlizzardBasin (parseInput, part1, part2) where
 
 import AdventOfCode (Parser)
 import Control.Applicative (many)
+import Control.DeepSeq (NFData)
 import Data.Bifunctor (bimap)
 import Data.List.Extra (minimumOn)
 import qualified Data.Map as M
 import qualified Data.Set as S
 import Data.Tuple.Extra (uncurry3)
+import GHC.Generics (Generic)
 import Text.Megaparsec (endBy, some, try, (<|>))
 import Text.Megaparsec.Char (char, newline)
 
 type Coordinate = (Int, Int)
 
-data Direction = North | East | South | West
+data Direction = North | East | South | West deriving (Generic, NFData)
 
 data Valley = Valley
   { height :: Int,
@@ -21,6 +26,7 @@ data Valley = Valley
     entry :: Coordinate,
     exit :: Coordinate
   }
+  deriving (Generic, NFData)
 
 parseInput :: Parser Valley
 parseInput = buildValley <$> wallHole <*> try (wall *> some ground <* wall) `endBy` newline <*> wallHole
